@@ -4,13 +4,13 @@ import subprocess
 # TO CHANGE: hardcoded tshark path for subprocess (needs full path for applications)
 tshark_path = '/usr/bin/tshark'
 
-def run_tshark(infile = None):
+def run_tshark(of, infile = None):  # input file and output file
     # Setup enviro
     current_path = os.getcwd()
     if not os.path.isdir(current_path + '/temp'):
         os.mkdir(current_path + '/temp')
 
-    out_file = os.path.join(current_path, 'temp', 'tshark.out')
+    out_file = os.path.join(current_path, 'temp', of)
     if os.path.exists(out_file):
         os.remove(out_file)
 
