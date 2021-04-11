@@ -1,0 +1,13 @@
+<doctype html = "">
+
+<table>
+{% for key in stats %}
+    <tr>
+        <th> {{ key }} </th>
+
+        <td> {{ stats[key].calculate_entropy() }} </td>
+    </tr>
+{% endfor %}
+</table>
+
+</doctype>
