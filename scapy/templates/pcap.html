@@ -1,13 +1,20 @@
 <doctype html = "">
 
-<table>
-{% for key in stats %}
+<table style="border: 1px solid black">
     <tr>
-        <th> {{ key }} </th>
-
-        <td> {{ stats[key].calculate_entropy() }} </td>
+        <th> <a href="{{ '/' + pcap + '?sort_type=src_ip' }}"> Src IP </a></th>
+        <th> <a href="{{ '/' + pcap + '?sort_type=src_port' }}"> Src Port </a> </th>
+        <th> <a href="{{ '/' + pcap + '?sort_type=dst_ip' }}"> Dst IP </a> </th>
+        <th> <a href="{{ '/' + pcap + '?sort_type=dst_port' }}"> Dst Port </a> </th>
+        <th> <a href="{{ '/' + pcap + '?sort_type=entropy' }}"> Entropy </a> </th>
     </tr>
-{% endfor %}
+    {% for idx, row in df.iterrows() %}
+    <tr>
+        {% for col in ['src_ip', 'src_port', 'dst_ip', 'dst_port', 'entropy'] %}
+            <td> {{ row[col] }} </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
 </table>
 
 </doctype>
