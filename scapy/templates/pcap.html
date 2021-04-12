@@ -10,7 +10,7 @@
     </tr>
     {% for idx, row in df.iterrows() %}
     <tr>
-        {% for col in ['src_ip', 'src_port', 'dst_ip', 'dst_port', 'entropy'] %}
+        {% for col in cols %}
             <td> {{ row[col] }} </td>
         {% endfor %}
     </tr>

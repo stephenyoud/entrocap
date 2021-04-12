@@ -13,34 +13,32 @@ cur_filename = ''
 @app.route('/<pcap>')
 def index(pcap):
     global cur_filename
+    global ec
     sort_type = request.args.get('sort_type', None)
 
     if os.path.exists(os.path.join(os.getcwd(), 'pcap_files', pcap)):
+        # If working on a new pcap file, update our entropy computer with new pcap
         if cur_filename != pcap:
             print(f'New File: {pcap}')
             cur_filename = pcap
+            ec = Entropy_Computer()
             if driver.run(ec, pcap=pcap) == -1:
                 return 'Failure'
 
         es = ec.entropy_stats
+        cols = ['src_ip', 'src_port', 'dst_ip', 'dst_port', 'entropy']
         df = pd.DataFrame()
-        vals = []
-        for key in es:
-            tmp = []
-            tmp.extend([val for val in key.split('_')])
-            tmp.append(es[key].calculate_entropy())
-            vals.append(tmp)
+
+        # list: [[src ip/port, dst ip/port, entropy] for all values from entropy computer]
+        vals = [[val for val in key.split('_')] + [es[key].calculate_entropy()] for key in es]
             
-        df['src_ip'] = [stat[0] for stat in vals]
-        df['src_port'] = [stat[1] for stat in vals]
-        df['dst_ip'] = [stat[2] for stat in vals]
-        df['dst_port'] = [stat[3] for stat in vals]
-        df['entropy'] = [stat[4] for stat in vals]
-        
+        for i, col in enumerate(cols):
+            df[col] = [stat[i] for stat in vals]
+
         if sort_type:
             df = df.sort_values(by=sort_type)
 
-        return render_template('pcap.html', df=df, pcap=pcap)
+        return render_template('pcap.html', df=df, cols=cols, pcap=pcap)
     else:
         return 'no'
     
