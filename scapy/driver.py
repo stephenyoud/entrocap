@@ -4,7 +4,7 @@ from entropy_computer import Entropy_Computer
 
 def callback(ec, packet):
     if TCP in packet:
-        ec.process_packet(packet)
+        ec.process_packet(packet, TCP)
 
 def run(ec, pcap = None):
     if pcap is not None:

@@ -6,6 +6,7 @@
         <th> <a href="{{ '/' + pcap + '?sort_type=src_port' }}"> Src Port </a> </th>
         <th> <a href="{{ '/' + pcap + '?sort_type=dst_ip' }}"> Dst IP </a> </th>
         <th> <a href="{{ '/' + pcap + '?sort_type=dst_port' }}"> Dst Port </a> </th>
+        <th> <a href="{{ '/' + pcap + '?sort_type=protocol' }}"> Protocol </a></th>
         <th> <a href="{{ '/' + pcap + '?sort_type=entropy' }}"> Entropy </a> </th>
     </tr>
     {% for idx, row in df.iterrows() %}

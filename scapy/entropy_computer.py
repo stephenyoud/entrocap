@@ -40,10 +40,12 @@ class Entropy_Computer():
     def get_stats(self):
         return self.entropy_stats
 
-    def process_packet(self, packet):
+    def process_packet(self, packet, proto):
         # Grab the identifying tuple
-        e_id = packet[IP].src + '_' + str(packet[TCP].sport) + '_' + \
-            packet[IP].dst + '_' + str(packet[TCP].dport)
+        e_id = packet[IP].src + '_' + str(packet[proto].sport) + '_' + \
+            packet[IP].dst + '_' + str(packet[proto].dport)
+
+        e_id += '_TCP' if proto == TCP else '_UDP'
         
         # Creates new entry in entropy stats if there is a new e_id
         if e_id not in self.entropy_stats:
@@ -51,5 +53,5 @@ class Entropy_Computer():
         
         # Turn payload into a byte array and update the histogram
         #byte_array = fields[self.idxr['tcp.payload']].split(':')
-        byte_array = bytes(packet[TCP].payload)
+        byte_array = bytes(packet[proto].payload)
         self.entropy_stats[e_id].update_histogram(byte_array)
