@@ -1,0 +1,21 @@
+<doctype html = "">
+
+<table style="border: 1px solid black">
+    <tr>
+        <th> <a href="{{ '/' + '?sort_type=src_ip' }}"> Src IP </a></th>
+        <th> <a href="{{ '/' + '?sort_type=src_port' }}"> Src Port </a> </th>
+        <th> <a href="{{ '/' + '?sort_type=dst_ip' }}"> Dst IP </a> </th>
+        <th> <a href="{{ '/' + '?sort_type=dst_port' }}"> Dst Port </a> </th>
+        <th> <a href="{{ '/' + '?sort_type=protocol' }}"> Protocol </a></th>
+        <th> <a href="{{ '/' + '?sort_type=entropy' }}"> Entropy </a> </th>
+    </tr>
+    {% for idx, row in df.iterrows() %}
+    <tr>
+        {% for col in cols %}
+            <td> {{ row[col] }} </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+</doctype>
