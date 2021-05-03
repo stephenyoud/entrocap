@@ -13,7 +13,7 @@ from scapy.all import *
 app = Flask(__name__)
 ec = Entropy_Computer()
 cur_filename = ''
-cols = ['src_ip', 'src_port', 'dst_ip', 'dst_port', 'protocol' 'entropy']   
+cols = ['src_ip', 'src_port', 'dst_ip', 'dst_port', 'protocol', 'entropy']   
 
 class Thread_Wrapper():
     def __init__(self):
