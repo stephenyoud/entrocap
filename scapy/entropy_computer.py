@@ -40,12 +40,36 @@ class Entropy_Computer():
     def get_stats(self):
         return self.entropy_stats
 
-    def process_packet(self, packet, proto):
-        # Grab the identifying tuple
-        e_id = packet[IP].src + '_' + str(packet[proto].sport) + '_' + \
-            packet[IP].dst + '_' + str(packet[proto].dport)
+    def get_layers(self, packet):
+        # layer stripping obtained from: 
+        #     https://stackoverflow.com/questions/13549294/get-all-the-layers-in-a-packet
+        yield packet.name
+        while packet.payload:
+            packet = packet.payload
+            yield packet.name
 
-        e_id += '_TCP' if proto == TCP else '_UDP'
+    def process_packet(self, packet):
+        # LAYERS: 
+            # 0 = ETHERNET
+            # 1 = IP
+            # 2 = PROTOCOL
+        layers = list(self.get_layers(packet))
+        if len(layers) < 2:
+            return
+
+        proto = layers[2]
+
+        # Grab the identifying tuple
+        try: 
+            e_id = packet[IP].src + '_' + str(packet[proto].sport) + '_' + \
+                packet[IP].dst + '_' + str(packet[proto].dport)
+
+            e_id += '_' + proto
+        except:
+            # Not all protocols can work sadly
+            print('Error: Cannot process packet (protocol error):')
+            packet.show()
+            return
         
         # Creates new entry in entropy stats if there is a new e_id
         if e_id not in self.entropy_stats:

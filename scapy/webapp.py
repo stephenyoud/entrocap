@@ -20,7 +20,7 @@ class Thread_Wrapper():
         self.running_meta = True
         self.running = False
         self.ec = Entropy_Computer()
-        self.background = threading.Thread(target=self.run, name='Test Thread')
+        self.background = threading.Thread(target=self.run, name='Background Thread')
 
     def stop_filter(self, x):
         if self.running:
@@ -29,9 +29,8 @@ class Thread_Wrapper():
             return True
 
     def callback(self, packet):
-        if TCP in packet:
-            self.ec.process_packet(packet, TCP)
-            print("processed a packet")
+        if IP in packet:
+            self.ec.process_packet(packet)
 
     def run(self):
         while self.running_meta:
@@ -109,7 +108,7 @@ def no_pcap():
     if sort_type:
         df = df.sort_values(by=sort_type)
     
-    return render_template('continuous.html', df=df, cols=cols)
+    return render_template('pcap.html', df=df, cols=cols, pcap='')
 
 
 if __name__ == '__main__':
