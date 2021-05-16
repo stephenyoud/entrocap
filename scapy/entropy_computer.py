@@ -1,5 +1,5 @@
 from math import log2, nan
-from scapy.all import IP, TCP
+from scapy.all import IP
 
 class Entropy_Stat():
     def __init__(self):
@@ -14,15 +14,20 @@ class Entropy_Stat():
             else:
                 self.hist[b] = 1
 
+        # Keep track of total number of bytes for entropy calculations
         self.byte_num += len(byte_array)
 
     def calculate_entropy(self): 
+        # 5-tuples with no stored packets have no entropy
         if (len(self.hist) == 0):
             return nan
 
+        # 5-tuples with only one byte have no ambiguity 
         if (len(self.hist) == 1):
             return 0
             
+        # We use the maximum possible entropy (treated as true random) of our 
+          # current histogram to normalize our values
         l = self.byte_num
         max_entro = log2(len(self.hist))
         
@@ -38,6 +43,7 @@ class Entropy_Computer():
         self.entropy_stats = {}     # 5-tuple: entropy_stat
 
     def get_stats(self):
+        # Getter
         return self.entropy_stats
 
     def get_layers(self, packet):
@@ -53,6 +59,7 @@ class Entropy_Computer():
             # 0 = ETHERNET
             # 1 = IP
             # 2 = PROTOCOL
+            # ... the rest
         layers = list(self.get_layers(packet))
         if len(layers) < 2:
             return
