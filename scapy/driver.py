@@ -28,6 +28,8 @@ if __name__ == '__main__':
 
     # Define entropy computer
     ec = Entropy_Computer()
+    
+    # Pcap is either live (sniffing) or pre-recorded
     run(ec = ec, pcap = args.input)
 
     # Print out the stats obtianed

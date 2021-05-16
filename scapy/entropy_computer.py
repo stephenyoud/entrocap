@@ -1,3 +1,10 @@
+# This code calculates the entropy for network connections.
+# In this program, network connections are defined 
+#    as a Src/Dst IP and Port w/ protocol.
+
+# If an encrypted connection has low entropy, your encryption has failed.
+# If a user is sending lots of high entropy, it could be an exfil
+
 from math import log2, nan
 from scapy.all import IP
 
@@ -82,7 +89,7 @@ class Entropy_Computer():
         if e_id not in self.entropy_stats:
             self.entropy_stats[e_id] = Entropy_Stat()
         
-        # Turn payload into a byte array and update the histogram
-        #byte_array = fields[self.idxr['tcp.payload']].split(':')
+        # Turn payload into a byte array and update the histogram.
+        # Entropy requires knowing frequencey, hence the histogram. 
         byte_array = bytes(packet[proto].payload)
         self.entropy_stats[e_id].update_histogram(byte_array)
