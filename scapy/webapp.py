@@ -5,7 +5,7 @@ import driver
 import os
 import pandas as pd
 import threading
-import time # to delete???
+import time
 import sys
 
 from scapy.all import *
@@ -58,7 +58,7 @@ def get_dataframe_from_entropy_stats(es):
     global cols
     df = pd.DataFrame()
 
-    # list: [[src ip/port, dst ip/port, entropy] for all values from entropy computer]
+    # list: [[src ip/port, dst ip/port, protocol, entropy] for all values from entropy computer]
     vals = [[val for val in key.split('_')] + [es[key].calculate_entropy()] for key in es]
         
     for i, col in enumerate(cols):
@@ -140,11 +140,6 @@ def no_pcap():
 
 
 if __name__ == '__main__':
-    # Get command line arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--input', help = 'Input File')
-    args = parser.parse_args()
-
     # Start background process and run the flask application
     tw.background.start()
     app.run()
