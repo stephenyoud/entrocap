@@ -1,2 +1,2 @@
 # entrocap
-Entropy Calculations on PCAP files using tshark.
+Entropy Calculations on PCAP files using scapy.
